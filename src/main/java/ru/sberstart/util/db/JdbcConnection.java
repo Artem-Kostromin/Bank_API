@@ -10,7 +10,7 @@ public class JdbcConnection {
         Connection connection = null;
         try {
             Class.forName("org.h2.Driver");
-            return DriverManager.getConnection("jdbc:h2:~/test", "sa", "");
+            return DriverManager.getConnection("jdbc:h2:~/Bank_API", "sa", "");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException throwable) {
