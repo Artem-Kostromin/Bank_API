@@ -1,4 +1,6 @@
 package ru.sberstart.repository.impl;
 
-public class AccountRepositoryImpl {
+import ru.sberstart.repository.IAccountRepository;
+
+public class AccountRepositoryImpl implements IAccountRepository {
 }

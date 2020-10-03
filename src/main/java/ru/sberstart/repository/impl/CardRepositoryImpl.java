@@ -1,4 +1,6 @@
 package ru.sberstart.repository.impl;
 
-public class CardRepositoryImpl {
+import ru.sberstart.repository.ICardRepository;
+
+public class CardRepositoryImpl implements ICardRepository {
 }
