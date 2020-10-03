@@ -1,4 +1,6 @@
 package ru.sberstart.repository.impl;
 
-public class ClientRepositoryImpl {
+import ru.sberstart.repository.IClientRepository;
+
+public class ClientRepositoryImpl implements IClientRepository {
 }
