@@ -11,11 +11,12 @@ import ru.sberstart.repository.IClientRepository;
 import ru.sberstart.repository.impl.AccountRepositoryImpl;
 import ru.sberstart.repository.impl.CardRepositoryImpl;
 import ru.sberstart.repository.impl.ClientRepositoryImpl;
+import ru.sberstart.util.db.JdbcConnection;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.sql.Connection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -27,9 +28,10 @@ import java.util.Set;
 public class Bootstrap implements ServiceLocator {
     private final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private final Map<String, AbstractCommand> commandList = new LinkedHashMap<>();
-    private final IClientRepository clientRepository = new ClientRepositoryImpl();
+    private final Connection connection = JdbcConnection.getConnection();
+    private final IClientRepository clientRepository = new ClientRepositoryImpl(this);
     private final IAccountRepository accountRepository = new AccountRepositoryImpl();
-    private final ICardRepository cardRepository = new CardRepositoryImpl();
+    private final ICardRepository cardRepository = new CardRepositoryImpl(this);
 
     public void startApp(Set<Class<? extends AbstractCommand>> commands) throws IOException {
         initCommands(commands);
@@ -63,4 +65,7 @@ public class Bootstrap implements ServiceLocator {
 
     }
 
+    public Connection getConnection() {
+        return this.connection;
+    }
 }
