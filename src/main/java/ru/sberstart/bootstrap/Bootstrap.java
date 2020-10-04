@@ -12,6 +12,7 @@ import ru.sberstart.repository.impl.AccountRepositoryImpl;
 import ru.sberstart.repository.impl.CardRepositoryImpl;
 import ru.sberstart.repository.impl.ClientRepositoryImpl;
 import ru.sberstart.util.db.JdbcConnection;
+import ru.sberstart.util.scriptRunner.SQLExecutor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,6 +35,7 @@ public class Bootstrap implements ServiceLocator {
     private final ICardRepository cardRepository = new CardRepositoryImpl(this);
 
     public void startApp(Set<Class<? extends AbstractCommand>> commands) throws IOException {
+        SQLExecutor.runScript(connection);
         initCommands(commands);
         while(true) {
             System.out.println("Добро пожаловать в Bank_API!\nВведите команду:");
