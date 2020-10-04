@@ -10,11 +10,9 @@ import java.sql.SQLException;
 public class SQLExecutor{
     public static void runScript(Connection connection){
         try {
-            RunScript.execute(connection, new FileReader("resources/initTables.sql"));
-        } catch (SQLException throwables) {
+            RunScript.execute(connection, new FileReader("src/main/resources/initTables.sql"));
+        } catch (SQLException | FileNotFoundException throwables) {
             throwables.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
     }
 }
