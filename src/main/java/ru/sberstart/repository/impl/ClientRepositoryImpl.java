@@ -1,12 +1,15 @@
 package ru.sberstart.repository.impl;
 
+import lombok.SneakyThrows;
 import ru.sberstart.bootstrap.Bootstrap;
 import ru.sberstart.entity.Client;
 import ru.sberstart.repository.IClientRepository;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClientRepositoryImpl implements IClientRepository {
@@ -20,8 +23,14 @@ public class ClientRepositoryImpl implements IClientRepository {
     @Override
     public List<Client> findAll() {
         Connection connection = bootstrap.getConnection();
+        List<Client> clients = new ArrayList<>();
         try {
-            connection.createStatement();
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("Select * from clients");
+            while(rs.next()){
+                clients.add(fetch(rs));
+            }
+            return clients;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -62,5 +71,15 @@ public class ClientRepositoryImpl implements IClientRepository {
     @Override
     public void removeAll() {
 
+    }
+
+    @SneakyThrows
+    private Client fetch(ResultSet row) {
+        if(row == null) return null;
+        Client client = new Client();
+        client.setId(Long.parseLong(row.getString("id")));
+        client.setLogin(row.getString("login"));
+        client.setPassword(row.getString("password"));
+        return client;
     }
 }

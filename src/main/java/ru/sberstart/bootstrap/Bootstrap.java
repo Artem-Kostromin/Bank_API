@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.sberstart.commannd.AbstractCommand;
+import ru.sberstart.entity.Client;
 import ru.sberstart.repository.IAccountRepository;
 import ru.sberstart.repository.ICardRepository;
 import ru.sberstart.repository.IClientRepository;
@@ -25,7 +26,6 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Bootstrap implements ServiceLocator {
     private final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private final Map<String, AbstractCommand> commandList = new LinkedHashMap<>();
@@ -37,6 +37,9 @@ public class Bootstrap implements ServiceLocator {
     public void startApp(Set<Class<? extends AbstractCommand>> commands) throws IOException {
         SQLExecutor.runScript(connection);
         initCommands(commands);
+        for (Client client : clientRepository.findAll()) {
+            System.out.println(client.getLogin());
+        }
         while(true) {
             System.out.println("Добро пожаловать в Bank_API!\nВведите команду:");
             String command = br.readLine();
