@@ -15,4 +15,6 @@ import java.util.List;
 public class Client {
     private long id;
     private List<Account> accounts;
+    private String login;
+    private String password;
 }
