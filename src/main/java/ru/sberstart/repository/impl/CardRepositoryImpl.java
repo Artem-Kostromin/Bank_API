@@ -7,11 +7,12 @@ import ru.sberstart.entity.Card;
 import ru.sberstart.repository.CardRepository;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.util.List;
 
 @AllArgsConstructor
 public class CardRepositoryImpl implements CardRepository {
-    private final Bootstrap bootstrap;
+    private final Connection connection;
 
     @Override
     public List<Card> findAllByClientId(long clientId) {

@@ -28,8 +28,8 @@ public class Bootstrap implements ServiceLocator {
     private final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private final Map<String, AbstractCommand> commandList = new LinkedHashMap<>();
     private final Connection connection = JdbcConnection.getConnection();
-    private final AccountRepository accountRepository = new AccountRepositoryImpl(this);
-    private final CardRepository cardRepository = new CardRepositoryImpl(this);
+    private final AccountRepository accountRepository = new AccountRepositoryImpl(connection);
+    private final CardRepository cardRepository = new CardRepositoryImpl(connection);
 
     public void startApp(Set<Class<? extends AbstractCommand>> commands) throws IOException {
         SQLExecutor.runScript(connection);
