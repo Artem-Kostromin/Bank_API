@@ -1,5 +1,5 @@
 package ru.sberstart.service;
 
-public interface ICardService {
+public interface CardService {
 
 }

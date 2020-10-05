@@ -5,7 +5,7 @@ import ru.sberstart.entity.Card;
 import java.math.BigDecimal;
 import java.util.List;
 
-public interface ICardRepository {
+public interface CardRepository {
 
     List<Card> findAllByClientId(long clientId);
 

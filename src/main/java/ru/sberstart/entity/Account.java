@@ -13,6 +13,5 @@ import java.util.List;
 @AllArgsConstructor
 public class Account {
     private long id;
-    private long client_id;
     private List<Card> cards;
 }

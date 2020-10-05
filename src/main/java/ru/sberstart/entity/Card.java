@@ -14,6 +14,5 @@ import java.math.BigDecimal;
 public class Card {
     private long id;
     private long account_id;
-    private long client_id;
     private BigDecimal balance;
 }
