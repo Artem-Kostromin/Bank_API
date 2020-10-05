@@ -1,18 +1,17 @@
 package ru.sberstart.repository.impl;
 
+import lombok.AllArgsConstructor;
+import ru.sberstart.bootstrap.Bootstrap;
 import ru.sberstart.bootstrap.ServiceLocator;
 import ru.sberstart.entity.Card;
-import ru.sberstart.repository.ICardRepository;
+import ru.sberstart.repository.CardRepository;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-public class CardRepositoryImpl implements ICardRepository {
-    private final ServiceLocator bootstrap;
-
-    public CardRepositoryImpl(ServiceLocator bootstrap) {
-        this.bootstrap = bootstrap;
-    }
+@AllArgsConstructor
+public class CardRepositoryImpl implements CardRepository {
+    private final Bootstrap bootstrap;
 
     @Override
     public List<Card> findAllByClientId(long clientId) {

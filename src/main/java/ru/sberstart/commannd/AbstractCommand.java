@@ -8,7 +8,7 @@ import ru.sberstart.bootstrap.ServiceLocator;
 @Getter
 @Setter
 public abstract class AbstractCommand {
-    protected ServiceLocator bootstrap;
+    protected Bootstrap bootstrap;
 
     public abstract String getName();
 
