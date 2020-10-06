@@ -4,7 +4,9 @@ import com.sun.net.httpserver.HttpServer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.sberstart.handler.TestHandler;
+import ru.sberstart.handler.account.CreateAccountHandler;
+import ru.sberstart.handler.account.GetAccountHandler;
+import ru.sberstart.handler.account.GetAccountsHandler;
 import ru.sberstart.repository.AccountRepository;
 import ru.sberstart.repository.CardRepository;
 import ru.sberstart.repository.impl.AccountRepositoryImpl;
@@ -29,8 +31,11 @@ public class Bootstrap implements ServiceLocator {
 
     public void startApp() throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
-        server.createContext("/test", new TestHandler());
+        server.createContext("/createAccount", new CreateAccountHandler(accountRepository));
+        server.createContext("/getAccount", new GetAccountHandler(accountRepository));
+        server.createContext("/getAccounts", new GetAccountsHandler(accountRepository));
         server.start();
         SQLExecutor.runScript(connection);
+        System.out.println("Server is started");
     }
 }
