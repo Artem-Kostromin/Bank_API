@@ -10,14 +10,17 @@ import java.util.List;
 
 @AllArgsConstructor
 public class AccountRepositoryImpl implements AccountRepository {
-    private Connection connection;
+    private final Connection connection;
 
     public Account findOne(long id) throws SQLException {
         PreparedStatement prStatement = connection.prepareStatement("SELECT * FROM accounts WHERE id = ?");
         prStatement.setLong(1, id);
         ResultSet rs = prStatement.executeQuery();
-        connection.close();
-        return fetch(rs);
+        rs.next();
+        Account account = fetch(rs);
+        rs.close();
+        prStatement.close();
+        return account;
 
     }
 
@@ -28,7 +31,7 @@ public class AccountRepositoryImpl implements AccountRepository {
         while(rs.next()) {
             accounts.add(fetch(rs));
         }
-        connection.close();
+        prStatement.close();
         return accounts;
     }
 
@@ -41,16 +44,15 @@ public class AccountRepositoryImpl implements AccountRepository {
             long id = rs.getLong(1);
             account.setId(id);
         }
-        connection.close();
+        prStatement.close();
         return account;
     }
 
     public boolean removeOne(long id) throws SQLException {
-        PreparedStatement prStatement = null;
-        prStatement = connection.prepareStatement("DELETE FROM accounts WHERE id = ?");
+        PreparedStatement prStatement = connection.prepareStatement("DELETE FROM accounts WHERE id = ?");
         prStatement.setLong(1, id);
         int i = prStatement.executeUpdate();
-        connection.close();
+        prStatement.close();
         return i > 0;
     }
 

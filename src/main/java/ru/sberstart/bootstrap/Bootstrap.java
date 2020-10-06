@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.sberstart.commannd.AbstractCommand;
-import ru.sberstart.entity.Account;
+import ru.sberstart.entity.Card;
 import ru.sberstart.repository.AccountRepository;
 import ru.sberstart.repository.CardRepository;
 import ru.sberstart.repository.impl.AccountRepositoryImpl;
@@ -15,6 +15,7 @@ import ru.sberstart.util.scriptRunner.SQLExecutor;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
@@ -34,11 +35,16 @@ public class Bootstrap implements ServiceLocator {
     public void startApp(Set<Class<? extends AbstractCommand>> commands) throws IOException {
         SQLExecutor.runScript(connection);
         initCommands(commands);
+
         try {
-            System.out.println(accountRepository.persist(new Account()).getId());
+            Card card = new Card();
+            card.setBalance(BigDecimal.valueOf(8652));
+            System.out.println(cardRepository.persist(1, card).getBalance());
+            cardRepository.findAllByAccount(1).forEach(a -> System.out.println(a.getBalance()));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+
         System.out.println("Добро пожаловать в Bank_API!");
         while(true) {
             System.out.println("Введите команду:");

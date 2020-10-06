@@ -16,12 +16,12 @@ public class CardRepositoryImpl implements CardRepository {
     @Override
     public List<Card> findAll() throws SQLException {
         List<Card> cards = new ArrayList<>();
-        PreparedStatement prStatement = connection.prepareStatement("SELECT * FROM accounts");
+        PreparedStatement prStatement = connection.prepareStatement("SELECT * FROM cards");
         ResultSet rs = prStatement.executeQuery();
         while(rs.next()) {
             cards.add(fetch(rs));
         }
-        connection.close();
+        prStatement.close();
         return cards;
     }
 
@@ -29,23 +29,26 @@ public class CardRepositoryImpl implements CardRepository {
     public List<Card> findAllByAccount(long accountId) throws SQLException {
         List<Card> cards = new ArrayList<>();
         PreparedStatement prStatement = connection
-                .prepareStatement("SELECT * FROM accounts WHERE account_id = ?");
+                .prepareStatement("SELECT * FROM cards WHERE account_id = ?");
         prStatement.setLong(1, accountId);
         ResultSet rs = prStatement.executeQuery();
         while(rs.next()) {
             cards.add(fetch(rs));
         }
-        connection.close();
+        prStatement.close();
         return cards;
     }
 
     @Override
     public Card findOne(long id) throws SQLException {
-        PreparedStatement prStatement = connection.prepareStatement("SELECT * FROM accounts WHERE id = ?");
+        PreparedStatement prStatement = connection.prepareStatement("SELECT * FROM cards WHERE id = ?");
         prStatement.setLong(1, id);
         ResultSet rs = prStatement.executeQuery();
-        connection.close();
-        return fetch(rs);
+        rs.next();
+        Card card = fetch(rs);
+        rs.close();
+        prStatement.close();
+        return card;
     }
 
     @Override
@@ -56,11 +59,12 @@ public class CardRepositoryImpl implements CardRepository {
         prStatement.setBigDecimal(2, card.getBalance());
         prStatement.executeUpdate();
         ResultSet rs = prStatement.getGeneratedKeys();
+        card.setAccountId(accountId);
         if(rs.next()) {
             long id = rs.getLong(1);
             card.setId(id);
         }
-        connection.close();
+        prStatement.close();
         return card;
     }
 
@@ -69,7 +73,7 @@ public class CardRepositoryImpl implements CardRepository {
         PreparedStatement prStatement = connection.prepareStatement("DELETE FROM cards WHERE id = ?");
         prStatement.setLong(1, id);
         int i = prStatement.executeUpdate();
-        connection.close();
+        prStatement.close();
         return i > 0;
     }
 
@@ -78,6 +82,7 @@ public class CardRepositoryImpl implements CardRepository {
         PreparedStatement prStatement = connection.prepareStatement("SELECT balance FROM cards WHERE id = ?");
         prStatement.setLong(1, id);
         ResultSet rs = prStatement.executeQuery();
+        prStatement.close();
         return rs.getBigDecimal("balance");
     }
 

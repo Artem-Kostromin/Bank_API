@@ -23,11 +23,8 @@ public class TestAccountRepository {
         DeleteDbFiles.execute("~/Bank_API", "Bank_API", true);
 
         try {
-           /* RunScript.execute(Objects.requireNonNull(JdbcConnection.getConnection()),
-                    new FileReader("src/main/resources/testScript/initSchema.sql"));*/
             RunScript.execute(Objects.requireNonNull(JdbcConnection.getConnection()),
                     new FileReader("src/main/resources/initTables.sql"));
-
         } catch (SQLException | FileNotFoundException throwables) {
             throwables.printStackTrace();
         }
@@ -39,6 +36,11 @@ public class TestAccountRepository {
         long id = 3;
         Account account = new AccountRepositoryImpl(connection).findOne(id);
         Assert.assertEquals(account.getId(), id);
+    }
+
+    @Test
+    public void findAll() throws SQLException {
+
     }
 
 }
