@@ -54,8 +54,10 @@ public class AccountRepositoryImpl implements AccountRepository {
 
     @SneakyThrows
     public boolean removeOne(long id) {
-        PreparedStatement prStatement = connection.prepareStatement("DELETE FROM accounts WHERE id = ?");
+        PreparedStatement prStatement = connection.prepareStatement("DELETE FROM accounts WHERE id = ?; " +
+                "DELETE FROM cards WHERE account_id = ?");
         prStatement.setLong(1, id);
+        prStatement.setLong(2, id);
         int i = prStatement.executeUpdate();
         prStatement.close();
         return i > 0;

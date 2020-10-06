@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -13,5 +14,5 @@ import java.util.List;
 @AllArgsConstructor
 public class Account {
     private long id;
-    private List<Card> cards;
+    private List<Card> cards = new ArrayList<>();
 }

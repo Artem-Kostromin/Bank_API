@@ -23,7 +23,7 @@ public class Card {
         }
 
         final Card card = (Card) obj;
-        return this.id == card.id && this.accountId == card.accountId && this.balance == card.balance;
+        return this.id == card.id && this.accountId == card.accountId && this.balance.equals(card.balance);
     }
     @Override
     public int hashCode(){

@@ -42,7 +42,6 @@ public class TestCardRepository {
     public void findAllTest(){
         int expectedNumberOfCards = 4;
         Assert.assertEquals(expectedNumberOfCards, cardRepo.findAll().size());
-
     }
 
     @SneakyThrows
@@ -70,7 +69,7 @@ public class TestCardRepository {
     @SneakyThrows
     @Test
     public void removeTest(){
-        Assert.assertTrue(cardRepo.remove(2));
+        Assert.assertTrue(cardRepo.removeOne(2));
     }
 
     @SneakyThrows

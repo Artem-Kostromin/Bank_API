@@ -7,6 +7,10 @@ import lombok.Setter;
 import ru.sberstart.handler.account.CreateAccountHandler;
 import ru.sberstart.handler.account.GetAccountHandler;
 import ru.sberstart.handler.account.GetAccountsHandler;
+import ru.sberstart.handler.account.RemoveAccountHandler;
+import ru.sberstart.handler.card.CreateCardHandler;
+import ru.sberstart.handler.card.GetCardsByAccountHandler;
+import ru.sberstart.handler.card.GetCardsHandler;
 import ru.sberstart.repository.AccountRepository;
 import ru.sberstart.repository.CardRepository;
 import ru.sberstart.repository.impl.AccountRepositoryImpl;
@@ -38,8 +42,13 @@ public class Bootstrap {
     public void startApp() throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
         server.createContext("/createAccount", new CreateAccountHandler(accountService));
-        server.createContext("/getAccount", new GetAccountHandler(accountService));
-        server.createContext("/getAccounts", new GetAccountsHandler(accountService));
+        server.createContext("/getAccount", new GetAccountHandler(accountService, cardService));
+        server.createContext("/getAccounts", new GetAccountsHandler(accountService, cardService));
+        server.createContext("/removeAccount", new RemoveAccountHandler(accountService));
+
+        server.createContext("/createCard", new CreateCardHandler(accountService, cardService));
+        server.createContext("/getCards", new GetCardsHandler(cardService));
+        server.createContext("/getCardsByAccount", new GetCardsByAccountHandler(cardService));
         server.start();
         SQLExecutor.runScript(connection);
         System.out.println("Server is started");
