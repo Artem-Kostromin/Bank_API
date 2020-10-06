@@ -25,7 +25,7 @@ public class TestAccountRepository {
         DeleteDbFiles.execute("~/Bank_API", "Bank_API", true);
 
         try {
-            RunScript.execute(Objects.requireNonNull(JdbcConnection.getConnection()),
+            RunScript.execute(Objects.requireNonNull(connection),
                     new FileReader("src/main/resources/initTables.sql"));
         } catch (SQLException | FileNotFoundException throwables) {
             throwables.printStackTrace();

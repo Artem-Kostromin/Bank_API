@@ -9,9 +9,9 @@ PRIMARY KEY (id)
 create table cards (
 id IDENTITY NOT NULL,
 account_id int (10) NOT NULL,
-balance int(11),
+balance DECIMAL,
 PRIMARY KEY (id)
 );
 
 INSERT into accounts values (default), (default), (default);
-INSERT into cards values (default, 1, 500), (default, 2, 789), (default, 3, 1243);
+INSERT into cards values (default, 1, 500), (default, 1, 700), (default, 2, 789), (default, 3, 1243);

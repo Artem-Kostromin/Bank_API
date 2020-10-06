@@ -82,8 +82,10 @@ public class CardRepositoryImpl implements CardRepository {
         PreparedStatement prStatement = connection.prepareStatement("SELECT balance FROM cards WHERE id = ?");
         prStatement.setLong(1, id);
         ResultSet rs = prStatement.executeQuery();
+        rs.next();
+        BigDecimal balance = rs.getBigDecimal("balance");
         prStatement.close();
-        return rs.getBigDecimal("balance");
+        return balance;
     }
 
     private Card fetch(ResultSet row) throws SQLException {
