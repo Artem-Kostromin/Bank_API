@@ -13,6 +13,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Card {
     private long id;
-    private long account_id;
+    private long accountId;
     private BigDecimal balance;
 }

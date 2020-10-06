@@ -1,10 +1,8 @@
 package ru.sberstart.repository.impl;
 
 import lombok.AllArgsConstructor;
-import ru.sberstart.bootstrap.Bootstrap;
 import ru.sberstart.entity.Account;
 import ru.sberstart.repository.AccountRepository;
-import ru.sberstart.util.db.JdbcConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,12 +10,13 @@ import java.util.List;
 
 @AllArgsConstructor
 public class AccountRepositoryImpl implements AccountRepository {
-    private final Connection connection;
+    private Connection connection;
 
     public Account findOne(long id) throws SQLException {
         PreparedStatement prStatement = connection.prepareStatement("SELECT * FROM accounts WHERE id = ?");
         prStatement.setLong(1, id);
         ResultSet rs = prStatement.executeQuery();
+        connection.close();
         return fetch(rs);
 
     }
@@ -29,6 +28,7 @@ public class AccountRepositoryImpl implements AccountRepository {
         while(rs.next()) {
             accounts.add(fetch(rs));
         }
+        connection.close();
         return accounts;
     }
 
@@ -38,10 +38,20 @@ public class AccountRepositoryImpl implements AccountRepository {
         prStatement.executeUpdate();
         ResultSet rs = prStatement.getGeneratedKeys();
         if (rs.next()) {
-            long generatedKey = rs.getLong(1);
-            account.setId(generatedKey);
+            long id = rs.getLong(1);
+            account.setId(id);
         }
+        connection.close();
         return account;
+    }
+
+    public boolean removeOne(long id) throws SQLException {
+        PreparedStatement prStatement = null;
+        prStatement = connection.prepareStatement("DELETE FROM accounts WHERE id = ?");
+        prStatement.setLong(1, id);
+        int i = prStatement.executeUpdate();
+        connection.close();
+        return i > 0;
     }
 
 
@@ -49,7 +59,7 @@ public class AccountRepositoryImpl implements AccountRepository {
     private Account fetch(ResultSet row) throws SQLException {
         if(row == null) return null;
         Account account = new Account();
-        account.setId(Long.parseLong(row.getString("id")));
+        account.setId(row.getLong("id"));
         return account;
     }
 }

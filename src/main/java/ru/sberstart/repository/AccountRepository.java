@@ -11,4 +11,6 @@ public interface AccountRepository {
     List<Account> findAll() throws SQLException;
 
     Account persist(Account account) throws SQLException;
+
+    boolean removeOne(long id) throws SQLException;
 }

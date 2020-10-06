@@ -3,17 +3,20 @@ package ru.sberstart.repository;
 import ru.sberstart.entity.Card;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface CardRepository {
 
-    List<Card> findAllByClientId(long clientId);
+    List<Card> findAll() throws SQLException;
 
-    Card findOne(long id);
+    List<Card> findAllByAccount(long accountId) throws SQLException;
 
-    void persistOnAccount(long accountId, Card card);
+    Card findOne(long id) throws SQLException;
 
-    void merge(Card card);
+    Card persist(long accountId, Card card) throws SQLException;
 
-    BigDecimal checkBalance(long id);
+    boolean remove(long id) throws  SQLException;
+
+    BigDecimal checkBalance(long id) throws SQLException;
 }

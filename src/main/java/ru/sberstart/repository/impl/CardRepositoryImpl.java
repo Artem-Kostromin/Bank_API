@@ -1,13 +1,12 @@
 package ru.sberstart.repository.impl;
 
 import lombok.AllArgsConstructor;
-import ru.sberstart.bootstrap.Bootstrap;
-import ru.sberstart.bootstrap.ServiceLocator;
 import ru.sberstart.entity.Card;
 import ru.sberstart.repository.CardRepository;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -15,27 +14,79 @@ public class CardRepositoryImpl implements CardRepository {
     private final Connection connection;
 
     @Override
-    public List<Card> findAllByClientId(long clientId) {
-        return null;
+    public List<Card> findAll() throws SQLException {
+        List<Card> cards = new ArrayList<>();
+        PreparedStatement prStatement = connection.prepareStatement("SELECT * FROM accounts");
+        ResultSet rs = prStatement.executeQuery();
+        while(rs.next()) {
+            cards.add(fetch(rs));
+        }
+        connection.close();
+        return cards;
     }
 
     @Override
-    public Card findOne(long id) {
-        return null;
+    public List<Card> findAllByAccount(long accountId) throws SQLException {
+        List<Card> cards = new ArrayList<>();
+        PreparedStatement prStatement = connection
+                .prepareStatement("SELECT * FROM accounts WHERE account_id = ?");
+        prStatement.setLong(1, accountId);
+        ResultSet rs = prStatement.executeQuery();
+        while(rs.next()) {
+            cards.add(fetch(rs));
+        }
+        connection.close();
+        return cards;
     }
 
     @Override
-    public void persistOnAccount(long accountId, Card card) {
-
+    public Card findOne(long id) throws SQLException {
+        PreparedStatement prStatement = connection.prepareStatement("SELECT * FROM accounts WHERE id = ?");
+        prStatement.setLong(1, id);
+        ResultSet rs = prStatement.executeQuery();
+        connection.close();
+        return fetch(rs);
     }
 
     @Override
-    public void merge(Card card) {
-
+    public Card persist(long accountId, Card card) throws SQLException {
+        PreparedStatement prStatement = connection.prepareStatement("INSERT INTO cards values (default, ?, ?)",
+                Statement.RETURN_GENERATED_KEYS);
+        prStatement.setLong(1, accountId);
+        prStatement.setBigDecimal(2, card.getBalance());
+        prStatement.executeUpdate();
+        ResultSet rs = prStatement.getGeneratedKeys();
+        if(rs.next()) {
+            long id = rs.getLong(1);
+            card.setId(id);
+        }
+        connection.close();
+        return card;
     }
 
     @Override
-    public BigDecimal checkBalance(long id) {
-        return null;
+    public boolean remove(long id) throws SQLException {
+        PreparedStatement prStatement = connection.prepareStatement("DELETE FROM cards WHERE id = ?");
+        prStatement.setLong(1, id);
+        int i = prStatement.executeUpdate();
+        connection.close();
+        return i > 0;
+    }
+
+    @Override
+    public BigDecimal checkBalance(long id) throws SQLException {
+        PreparedStatement prStatement = connection.prepareStatement("SELECT balance FROM cards WHERE id = ?");
+        prStatement.setLong(1, id);
+        ResultSet rs = prStatement.executeQuery();
+        return rs.getBigDecimal("balance");
+    }
+
+    private Card fetch(ResultSet row) throws SQLException {
+        if(row == null) return null;
+        Card card = new Card();
+        card.setId(row.getLong("id"));
+        card.setAccountId(row.getLong("account_id"));
+        card.setBalance(row.getBigDecimal("balance"));
+        return card;
     }
 }
