@@ -2,15 +2,14 @@ package ru.sberstart.repository;
 
 import ru.sberstart.entity.Account;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface AccountRepository {
-    Account findOne(long id) throws SQLException;
+    Account findOne(long id);
 
-    List<Account> findAll() throws SQLException;
+    List<Account> findAll();
 
-    Account persist(Account account) throws SQLException;
+    Account persist(Account account);
 
-    boolean removeOne(long id) throws SQLException;
+    boolean removeOne(long id);
 }

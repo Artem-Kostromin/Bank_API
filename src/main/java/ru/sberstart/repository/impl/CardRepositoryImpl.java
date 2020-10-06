@@ -1,6 +1,7 @@
 package ru.sberstart.repository.impl;
 
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import ru.sberstart.entity.Card;
 import ru.sberstart.repository.CardRepository;
 
@@ -13,8 +14,9 @@ import java.util.List;
 public class CardRepositoryImpl implements CardRepository {
     private final Connection connection;
 
+    @SneakyThrows
     @Override
-    public List<Card> findAll() throws SQLException {
+    public List<Card> findAll() {
         List<Card> cards = new ArrayList<>();
         PreparedStatement prStatement = connection.prepareStatement("SELECT * FROM cards");
         ResultSet rs = prStatement.executeQuery();
@@ -25,8 +27,9 @@ public class CardRepositoryImpl implements CardRepository {
         return cards;
     }
 
+    @SneakyThrows
     @Override
-    public List<Card> findAllByAccount(long accountId) throws SQLException {
+    public List<Card> findAllByAccount(long accountId) {
         List<Card> cards = new ArrayList<>();
         PreparedStatement prStatement = connection
                 .prepareStatement("SELECT * FROM cards WHERE account_id = ?");
@@ -39,8 +42,9 @@ public class CardRepositoryImpl implements CardRepository {
         return cards;
     }
 
+    @SneakyThrows
     @Override
-    public Card findOne(long id) throws SQLException {
+    public Card findOne(long id) {
         PreparedStatement prStatement = connection.prepareStatement("SELECT * FROM cards WHERE id = ?");
         prStatement.setLong(1, id);
         ResultSet rs = prStatement.executeQuery();
@@ -51,8 +55,9 @@ public class CardRepositoryImpl implements CardRepository {
         return card;
     }
 
+    @SneakyThrows
     @Override
-    public Card persist(long accountId, Card card) throws SQLException {
+    public Card persist(long accountId, Card card) {
         PreparedStatement prStatement = connection.prepareStatement("INSERT INTO cards values (default, ?, ?)",
                 Statement.RETURN_GENERATED_KEYS);
         prStatement.setLong(1, accountId);
@@ -68,8 +73,9 @@ public class CardRepositoryImpl implements CardRepository {
         return card;
     }
 
+    @SneakyThrows
     @Override
-    public boolean remove(long id) throws SQLException {
+    public boolean removeOne(long id) {
         PreparedStatement prStatement = connection.prepareStatement("DELETE FROM cards WHERE id = ?");
         prStatement.setLong(1, id);
         int i = prStatement.executeUpdate();
@@ -77,8 +83,9 @@ public class CardRepositoryImpl implements CardRepository {
         return i > 0;
     }
 
+    @SneakyThrows
     @Override
-    public BigDecimal checkBalance(long id) throws SQLException {
+    public BigDecimal checkBalance(long id) {
         PreparedStatement prStatement = connection.prepareStatement("SELECT balance FROM cards WHERE id = ?");
         prStatement.setLong(1, id);
         ResultSet rs = prStatement.executeQuery();

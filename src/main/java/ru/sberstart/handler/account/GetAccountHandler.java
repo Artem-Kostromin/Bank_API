@@ -7,19 +7,19 @@ import com.sun.net.httpserver.HttpHandler;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import ru.sberstart.entity.Account;
-import ru.sberstart.repository.AccountRepository;
+import ru.sberstart.service.AccountService;
 
 import java.io.OutputStream;
 
 @AllArgsConstructor
 public class GetAccountHandler implements HttpHandler {
-    private final AccountRepository repository;
+    private final AccountService service;
 
     @SneakyThrows
     @Override
     public void handle(HttpExchange httpExchange) {
         String id = handleGetRequest(httpExchange);
-        Account account = repository.findOne(Integer.parseInt(id));
+        Account account = service.findOne(Integer.parseInt(id));
 
         OutputStream outputStream = httpExchange.getResponseBody();
         ObjectMapper mapper = new ObjectMapper();

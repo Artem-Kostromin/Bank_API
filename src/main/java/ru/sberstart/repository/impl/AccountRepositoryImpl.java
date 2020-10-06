@@ -1,6 +1,7 @@
 package ru.sberstart.repository.impl;
 
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import ru.sberstart.entity.Account;
 import ru.sberstart.repository.AccountRepository;
 
@@ -12,7 +13,8 @@ import java.util.List;
 public class AccountRepositoryImpl implements AccountRepository {
     private final Connection connection;
 
-    public Account findOne(long id) throws SQLException {
+    @SneakyThrows
+    public Account findOne(long id) {
         PreparedStatement prStatement = connection.prepareStatement("SELECT * FROM accounts WHERE id = ?");
         prStatement.setLong(1, id);
         ResultSet rs = prStatement.executeQuery();
@@ -24,7 +26,8 @@ public class AccountRepositoryImpl implements AccountRepository {
 
     }
 
-    public List<Account> findAll() throws SQLException {
+    @SneakyThrows
+    public List<Account> findAll() {
         List<Account> accounts = new ArrayList<>();
         PreparedStatement prStatement = connection.prepareStatement("SELECT * FROM accounts");
         ResultSet rs = prStatement.executeQuery();
@@ -35,7 +38,8 @@ public class AccountRepositoryImpl implements AccountRepository {
         return accounts;
     }
 
-    public Account persist(Account account) throws SQLException {
+    @SneakyThrows
+    public Account persist(Account account) {
         PreparedStatement prStatement = connection.prepareStatement("INSERT INTO accounts values (default)",
                 Statement.RETURN_GENERATED_KEYS);
         prStatement.executeUpdate();
@@ -48,7 +52,8 @@ public class AccountRepositoryImpl implements AccountRepository {
         return account;
     }
 
-    public boolean removeOne(long id) throws SQLException {
+    @SneakyThrows
+    public boolean removeOne(long id) {
         PreparedStatement prStatement = connection.prepareStatement("DELETE FROM accounts WHERE id = ?");
         prStatement.setLong(1, id);
         int i = prStatement.executeUpdate();
