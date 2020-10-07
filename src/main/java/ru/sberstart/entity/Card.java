@@ -1,5 +1,6 @@
 package ru.sberstart.entity;
 
+import com.fasterxml.jackson.annotation.JacksonAnnotation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,6 @@ public class Card {
         if (obj == null) {
             return false;
         }
-
         final Card card = (Card) obj;
         return this.id == card.id && this.accountId == card.accountId && this.balance.equals(card.balance);
     }

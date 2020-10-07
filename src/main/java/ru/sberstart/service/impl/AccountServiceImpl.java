@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import ru.sberstart.entity.Account;
 import ru.sberstart.repository.AccountRepository;
 import ru.sberstart.service.AccountService;
+import ru.sberstart.util.log.Log;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -17,7 +18,7 @@ public class AccountServiceImpl implements AccountService {
         try {
             return repository.findOne(id);
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            Log.logger.info(throwables.getMessage());
         }
         return null;
     }
@@ -27,7 +28,7 @@ public class AccountServiceImpl implements AccountService {
         try {
             return repository.findAll();
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            Log.logger.info(throwables.getMessage());
         }
         return null;
     }
@@ -37,7 +38,7 @@ public class AccountServiceImpl implements AccountService {
         try {
             return repository.persist(account);
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            Log.logger.info(throwables.getMessage());
         }
         return null;
     }
@@ -47,7 +48,7 @@ public class AccountServiceImpl implements AccountService {
         try {
             return repository.removeOne(id);
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            Log.logger.info(throwables.getMessage());
         }
         return false;
     }

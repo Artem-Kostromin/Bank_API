@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import ru.sberstart.entity.Card;
 import ru.sberstart.repository.CardRepository;
 import ru.sberstart.service.CardService;
+import ru.sberstart.util.log.Log;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -18,7 +19,7 @@ public class CardServiceImpl implements CardService {
         try {
             return repository.findAll();
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            Log.logger.info(throwables.getMessage());
         }
         return null;
     }
@@ -28,7 +29,7 @@ public class CardServiceImpl implements CardService {
         try {
             return repository.findAllByAccount(accountId);
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            Log.logger.info(throwables.getMessage());
         }
         return null;
     }
@@ -38,7 +39,7 @@ public class CardServiceImpl implements CardService {
         try {
             return repository.findOne(id);
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            Log.logger.info(throwables.getMessage());
         }
         return null;
     }
@@ -48,7 +49,7 @@ public class CardServiceImpl implements CardService {
         try {
             return repository.persist(accountId, card);
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            Log.logger.info(throwables.getMessage());
         }
         return null;
     }
@@ -58,7 +59,7 @@ public class CardServiceImpl implements CardService {
         try {
             return repository.removeOne(id);
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            Log.logger.info(throwables.getMessage());
         }
         return false;
     }
@@ -68,7 +69,7 @@ public class CardServiceImpl implements CardService {
         try {
             return repository.update(id, card);
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            Log.logger.info(throwables.getMessage());
         }
         return null;
     }
@@ -78,7 +79,7 @@ public class CardServiceImpl implements CardService {
         try {
             return repository.checkBalance(id);
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            Log.logger.info(throwables.getMessage());
         }
         return null;
     }
