@@ -7,6 +7,7 @@
     <groupId>ru.sberstart</groupId>
     <artifactId>Bank_API</artifactId>
     <version>1.0</version>
+
     <build>
         <plugins>
             <plugin>
@@ -59,9 +60,10 @@
             <version>2.2.2</version>
         </dependency>
         <dependency>
-            <groupId>org.unbescape</groupId>
-            <artifactId>unbescape</artifactId>
-            <version>1.1.6.RELEASE</version>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.200</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

@@ -17,7 +17,6 @@ public class RemoveCardHandler implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
         int accountId = RequestParamTransformer.handleGetRequest(httpExchange);
         service.removeOne(accountId);
-        //Здесь косяк с ответом
-        //new ResponseMaker<String>().makeResponse("Карта по счету " + accountId + " успешно удалена!", httpExchange);
+        new ResponseMaker<String>().makeResponse("Card with account id " + accountId + " removed success!", httpExchange);
     }
 }

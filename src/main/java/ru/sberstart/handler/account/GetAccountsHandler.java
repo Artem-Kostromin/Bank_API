@@ -22,15 +22,5 @@ public class GetAccountsHandler implements HttpHandler {
         List<Account> accounts = aService.findAll();
         accounts.forEach(a -> a.setCards(cService.findAllByAccount(a.getId())));
         new ResponseMaker<List<Account>>().makeResponse(accounts, httpExchange);
-        /*OutputStream outputStream = httpExchange.getResponseBody();
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
-        String s = writer.writeValueAsString(accounts);
-
-        httpExchange.sendResponseHeaders(200, s.length());
-
-        outputStream.write(s.getBytes());
-        outputStream.flush();
-        outputStream.close();*/
     }
 }

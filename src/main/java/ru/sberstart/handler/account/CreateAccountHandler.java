@@ -20,15 +20,5 @@ public class CreateAccountHandler implements HttpHandler {
         account.setId(id);
 
         new ResponseMaker<Account>().makeResponse(account, httpExchange);
-        /*OutputStream outputStream = httpExchange.getResponseBody();
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
-        String s = writer.writeValueAsString(account);
-
-        httpExchange.sendResponseHeaders(200, s.length());
-
-        outputStream.write(s.getBytes());
-        outputStream.flush();
-        outputStream.close();*/
     }
 }

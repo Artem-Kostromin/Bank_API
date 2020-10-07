@@ -27,16 +27,5 @@ public class CreateCardHandler implements HttpHandler {
         Card card = cardService.persist(account_id, new Card());
         accountService.findOne(account_id).getCards().add(card);
         new ResponseMaker<Card>().makeResponse(card, httpExchange);
-
-        /*OutputStream outputStream = httpExchange.getResponseBody();
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
-        String s = writer.writeValueAsString(card);
-
-        httpExchange.sendResponseHeaders(200, s.length());
-
-        outputStream.write(s.getBytes());
-        outputStream.flush();
-        outputStream.close();*/
     }
 }
