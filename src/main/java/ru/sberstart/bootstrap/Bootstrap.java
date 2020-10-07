@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpServer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.sberstart.handler.MainHandler;
 import ru.sberstart.handler.account.CreateAccountHandler;
 import ru.sberstart.handler.account.GetAccountHandler;
 import ru.sberstart.handler.account.GetAccountsHandler;
@@ -39,6 +40,7 @@ public class Bootstrap {
 
     public void startApp() throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+        server.createContext("/", new MainHandler());
         server.createContext("/createAccount", new CreateAccountHandler(accountService));
         server.createContext("/getAccount", new GetAccountHandler(accountService, cardService));
         server.createContext("/getAccounts", new GetAccountsHandler(accountService, cardService));
