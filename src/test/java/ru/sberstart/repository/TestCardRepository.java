@@ -9,6 +9,7 @@ import org.junit.ComparisonFailure;
 import org.junit.Test;
 import ru.sberstart.entity.Account;
 import ru.sberstart.entity.Card;
+import ru.sberstart.repository.impl.AccountRepositoryImpl;
 import ru.sberstart.repository.impl.CardRepositoryImpl;
 import ru.sberstart.util.db.JdbcConnection;
 import sun.java2d.pipe.AAShapePipe;
@@ -23,7 +24,8 @@ import java.util.Objects;
 
 public class TestCardRepository {
     private final Connection connection = JdbcConnection.getConnection();
-    private final CardRepositoryImpl cardRepo = new CardRepositoryImpl(connection);
+    private final AccountRepository accountRepo = new AccountRepositoryImpl(connection);
+    private final CardRepository cardRepo = new CardRepositoryImpl(connection, accountRepo);
 
     @Before
     public void before() {

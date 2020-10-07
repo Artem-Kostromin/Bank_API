@@ -1,16 +1,14 @@
 package ru.sberstart.handler.account;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import ru.sberstart.entity.Account;
+import ru.sberstart.handler.util.RequestParamTransformer;
+import ru.sberstart.handler.util.ResponseMaker;
 import ru.sberstart.service.AccountService;
 import ru.sberstart.service.CardService;
-
-import java.io.OutputStream;
 
 @AllArgsConstructor
 public class GetAccountHandler implements HttpHandler {
@@ -20,11 +18,12 @@ public class GetAccountHandler implements HttpHandler {
     @SneakyThrows
     @Override
     public void handle(HttpExchange httpExchange) {
-        String id = handleGetRequest(httpExchange);
-        Account account = aService.findOne(Integer.parseInt(id));
-        account.setCards(cService.findAllByAccount(Long.parseLong(id)));
+        int id = RequestParamTransformer.handleGetRequest(httpExchange);
+        Account account = aService.findOne(id);
+        account.setCards(cService.findAllByAccount(id));
 
-        OutputStream outputStream = httpExchange.getResponseBody();
+        new ResponseMaker<Account>().makeResponse(account, httpExchange);
+        /*OutputStream outputStream = httpExchange.getResponseBody();
         ObjectMapper mapper = new ObjectMapper();
         ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
         String s = writer.writeValueAsString(account);
@@ -33,7 +32,7 @@ public class GetAccountHandler implements HttpHandler {
 
         outputStream.write(s.getBytes());
         outputStream.flush();
-        outputStream.close();
+        outputStream.close();*/
     }
 
     private String handleGetRequest(HttpExchange httpExchange) {

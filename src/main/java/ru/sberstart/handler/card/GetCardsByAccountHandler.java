@@ -6,6 +6,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import lombok.AllArgsConstructor;
 import ru.sberstart.entity.Card;
+import ru.sberstart.handler.util.RequestParamTransformer;
 import ru.sberstart.service.CardService;
 
 import java.io.IOException;
@@ -18,7 +19,7 @@ public class GetCardsByAccountHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        List<Card> cards = service.findAllByAccount(Long.parseLong(handleGetRequest(httpExchange)));
+        List<Card> cards = service.findAllByAccount(RequestParamTransformer.handleGetRequest(httpExchange));
 
         OutputStream outputStream = httpExchange.getResponseBody();
         ObjectMapper mapper = new ObjectMapper();
@@ -30,13 +31,5 @@ public class GetCardsByAccountHandler implements HttpHandler {
         outputStream.write(s.getBytes());
         outputStream.flush();
         outputStream.close();
-    }
-
-    private String handleGetRequest(HttpExchange httpExchange) {
-        return httpExchange.
-                getRequestURI()
-                .toString()
-                .split("\\?")[1]
-                .split("=")[1];
     }
 }

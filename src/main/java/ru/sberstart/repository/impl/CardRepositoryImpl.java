@@ -3,6 +3,7 @@ package ru.sberstart.repository.impl;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import ru.sberstart.entity.Card;
+import ru.sberstart.repository.AccountRepository;
 import ru.sberstart.repository.CardRepository;
 
 import java.math.BigDecimal;
@@ -13,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CardRepositoryImpl implements CardRepository {
     private final Connection connection;
+    private final AccountRepository accountRepository;
 
     @SneakyThrows
     @Override
@@ -61,7 +63,7 @@ public class CardRepositoryImpl implements CardRepository {
         PreparedStatement prStatement = connection.prepareStatement("INSERT INTO cards values (default, ?, ?)",
                 Statement.RETURN_GENERATED_KEYS);
         prStatement.setLong(1, accountId);
-        prStatement.setBigDecimal(2, card.getBalance());
+        prStatement.setBigDecimal(2, BigDecimal.valueOf(0));
         prStatement.executeUpdate();
         ResultSet rs = prStatement.getGeneratedKeys();
         card.setAccountId(accountId);
@@ -76,10 +78,12 @@ public class CardRepositoryImpl implements CardRepository {
     @SneakyThrows
     @Override
     public boolean removeOne(long id) {
+        Card card = findOne(id);
         PreparedStatement prStatement = connection.prepareStatement("DELETE FROM cards WHERE id = ?");
         prStatement.setLong(1, id);
         int i = prStatement.executeUpdate();
         prStatement.close();
+        accountRepository.findOne(id).getCards().remove(card);
         return i > 0;
     }
 

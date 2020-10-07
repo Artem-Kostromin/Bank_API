@@ -3,6 +3,7 @@ package ru.sberstart.handler.account;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import lombok.AllArgsConstructor;
+import ru.sberstart.handler.util.RequestParamTransformer;
 import ru.sberstart.service.AccountService;
 
 import java.io.IOException;
@@ -15,8 +16,8 @@ public class RemoveAccountHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         OutputStream outputStream = httpExchange.getResponseBody();
-        String id = handleGetRequest(httpExchange);
-        boolean isRemove = service.removeOne(Integer.parseInt(id));
+        int id = RequestParamTransformer.handleGetRequest(httpExchange);
+        boolean isRemove = service.removeOne(id);
         String answer = null;
         if(isRemove) {
             answer = "remove were success";
@@ -29,13 +30,5 @@ public class RemoveAccountHandler implements HttpHandler {
         outputStream.write(answer.getBytes());
         outputStream.flush();
         outputStream.close();
-    }
-
-    private String handleGetRequest(HttpExchange httpExchange) {
-        return httpExchange.
-                getRequestURI()
-                .toString()
-                .split("\\?")[1]
-                .split("=")[1];
     }
 }
