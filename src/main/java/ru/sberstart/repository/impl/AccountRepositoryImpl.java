@@ -13,8 +13,8 @@ import java.util.List;
 public class AccountRepositoryImpl implements AccountRepository {
     private final Connection connection;
 
-    @SneakyThrows
-    public Account findOne(long id) {
+
+    public Account findOne(long id) throws SQLException {
         PreparedStatement prStatement = connection.prepareStatement("SELECT * FROM accounts WHERE id = ?");
         prStatement.setLong(1, id);
         ResultSet rs = prStatement.executeQuery();
@@ -26,8 +26,7 @@ public class AccountRepositoryImpl implements AccountRepository {
 
     }
 
-    @SneakyThrows
-    public List<Account> findAll() {
+    public List<Account> findAll() throws SQLException {
         List<Account> accounts = new ArrayList<>();
         PreparedStatement prStatement = connection.prepareStatement("SELECT * FROM accounts");
         ResultSet rs = prStatement.executeQuery();
@@ -38,8 +37,7 @@ public class AccountRepositoryImpl implements AccountRepository {
         return accounts;
     }
 
-    @SneakyThrows
-    public Account persist(Account account) {
+    public Account persist(Account account) throws SQLException {
         PreparedStatement prStatement = connection.prepareStatement("INSERT INTO accounts values (default)",
                 Statement.RETURN_GENERATED_KEYS);
         prStatement.executeUpdate();
@@ -52,8 +50,7 @@ public class AccountRepositoryImpl implements AccountRepository {
         return account;
     }
 
-    @SneakyThrows
-    public boolean removeOne(long id) {
+    public boolean removeOne(long id) throws SQLException {
         PreparedStatement prStatement = connection.prepareStatement("DELETE FROM accounts WHERE id = ?; " +
                 "DELETE FROM cards WHERE account_id = ?");
         prStatement.setLong(1, id);

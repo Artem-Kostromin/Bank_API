@@ -16,5 +16,7 @@ public interface CardService {
 
     boolean removeOne(long id);
 
+    Card update(long id, Card card);
+
     BigDecimal checkBalance(long id);
 }

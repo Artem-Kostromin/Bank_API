@@ -52,6 +52,7 @@ public class Bootstrap {
         server.createContext("/getCardsByAccount", new GetCardsByAccountHandler(cardService));
         server.createContext("/removeCard", new RemoveCardHandler(cardService));
         server.createContext("/checkBalance", new CheckBalanceHandler(cardService));
+        server.createContext("/updateBalance", new UpdateBalanceHandler(cardService));
         server.start();
         SQLExecutor.runScript(connection);
         System.out.println("Server is started");

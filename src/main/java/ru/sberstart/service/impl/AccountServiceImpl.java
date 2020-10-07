@@ -5,6 +5,7 @@ import ru.sberstart.entity.Account;
 import ru.sberstart.repository.AccountRepository;
 import ru.sberstart.service.AccountService;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @AllArgsConstructor
@@ -13,21 +14,41 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account findOne(long id) {
-        return repository.findOne(id);
+        try {
+            return repository.findOne(id);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public List<Account> findAll() {
-        return repository.findAll();
+        try {
+            return repository.findAll();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public Account persist(Account account) {
-        return repository.persist(account);
+        try {
+            return repository.persist(account);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public boolean removeOne(long id) {
-        return repository.removeOne(id);
+        try {
+            return repository.removeOne(id);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
     }
 }
