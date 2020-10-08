@@ -5,8 +5,11 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,5 +53,37 @@ public class TestAccountHandler {
         Account[] accounts = mapper.readValue(result, Account[].class);
 
         Assert.assertTrue(accounts.length > 1);
+    }
+
+    @Test
+    public void getAccountHandlerTest() throws IOException {
+        int id = 1;
+        HttpPost request = new HttpPost("http://localhost:8080/getAccount?id="+id);
+        String json = "{" +
+                "\"id\":\""+id+"\"" +
+                "}";
+        request.setEntity(new StringEntity(json));
+        CloseableHttpResponse response = client.execute(request);
+        String result = EntityUtils.toString(response.getEntity());
+
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(result, Account.class);
+
+        Assert.assertEquals(id, account.getId());
+    }
+
+    @Test
+    public void removeAccountHandlerTest() throws IOException {
+        int id = 2;
+        HttpPost request = new HttpPost("http://localhost:8080/removeAccount?id="+id);
+        String json = "{" +
+                "\"id\":\""+id+"\"" +
+                "}";
+        request.setEntity(new StringEntity(json));
+        CloseableHttpResponse response = client.execute(request);
+        String result = EntityUtils.toString(response.getEntity());
+        System.out.println(result);
+
+        Assert.assertNotNull(result);
     }
 }

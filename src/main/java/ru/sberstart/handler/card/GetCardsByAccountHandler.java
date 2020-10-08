@@ -1,7 +1,5 @@
 package ru.sberstart.handler.card;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import lombok.AllArgsConstructor;
@@ -13,7 +11,6 @@ import ru.sberstart.handler.util.ResponseMaker;
 import ru.sberstart.service.CardService;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 
 @AllArgsConstructor
