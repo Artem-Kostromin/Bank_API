@@ -1,7 +1,6 @@
 package ru.sberstart.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -11,15 +10,10 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.junit.Assert;
 import org.junit.Test;
-import ru.sberstart.entity.Account;
 import ru.sberstart.entity.Card;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TestCardHandler {
     private final CloseableHttpClient client = HttpClients.createDefault();

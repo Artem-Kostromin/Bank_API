@@ -1,18 +1,14 @@
 package ru.sberstart.repository;
 
-import lombok.SneakyThrows;
 import org.h2.tools.DeleteDbFiles;
 import org.h2.tools.RunScript;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.ComparisonFailure;
 import org.junit.Test;
-import ru.sberstart.entity.Account;
 import ru.sberstart.entity.Card;
 import ru.sberstart.repository.impl.AccountRepositoryImpl;
 import ru.sberstart.repository.impl.CardRepositoryImpl;
 import ru.sberstart.util.db.JdbcConnection;
-import sun.java2d.pipe.AAShapePipe;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -21,8 +17,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.Format;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class TestCardRepository {
@@ -70,7 +64,7 @@ public class TestCardRepository {
     public void persistTest() throws SQLException {
         Card exCard = new Card();
         exCard.setAccountId(1);
-        exCard.setBalance(BigDecimal.valueOf(827.89));
+        exCard.setBalance(new BigDecimal("827.89"));
         exCard.setId(cardRepo.persist(exCard.getAccountId(), exCard).getId());
 
         assert connection != null;
