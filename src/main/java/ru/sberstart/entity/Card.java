@@ -32,4 +32,13 @@ public class Card {
         hash = 53 * hash + 17;
         return hash;
     }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+                "id=" + id +
+                ", accountId=" + accountId +
+                ", balance=" + balance +
+                '}';
+    }
 }

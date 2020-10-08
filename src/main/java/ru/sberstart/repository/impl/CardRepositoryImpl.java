@@ -64,7 +64,7 @@ public class CardRepositoryImpl implements CardRepository {
         PreparedStatement prStatement = connection.prepareStatement("INSERT INTO cards values (default, ?, ?)",
                 Statement.RETURN_GENERATED_KEYS);
         prStatement.setLong(1, accountId);
-        prStatement.setBigDecimal(2, BigDecimal.valueOf(0));
+        prStatement.setBigDecimal(2, card.getBalance());
         prStatement.executeUpdate();
         ResultSet rs = prStatement.getGeneratedKeys();
         card.setAccountId(accountId);

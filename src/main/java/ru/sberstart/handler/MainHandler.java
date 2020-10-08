@@ -24,7 +24,8 @@ public class MainHandler implements HttpHandler {
                 "<h3>http://localhost:8080/getCard?id={} - get card by id</h3>" +
                 "<h3>http://localhost:8080/getCards - get all cards</h3>" +
                 "<h3>http://localhost:8080/getCardsByAccount?accountId={} - get all cards by account id</h3>" +
-                "<h3>http://localhost:8080/checkBalance?id={} - check card balance</h3>";
+                "<h3>http://localhost:8080/checkBalance?id={} - check card balance</h3>" +
+                "<h3>http://localhost:8080/updateBalance?id={}&balance={} - update card balance</h3>";
 
         httpExchange.sendResponseHeaders(200, s.length());
 

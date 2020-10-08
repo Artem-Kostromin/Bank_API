@@ -1,6 +1,8 @@
 package ru.sberstart.handler.card;
 
 import lombok.AllArgsConstructor;
+import ru.sberstart.entity.Card;
+import ru.sberstart.handler.util.POSTRequestHandler;
 import ru.sberstart.handler.util.RequestParamTransformer;
 import ru.sberstart.handler.util.ResponseMaker;
 import ru.sberstart.service.CardService;
@@ -16,7 +18,13 @@ public class CheckBalanceHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        int cardId = RequestParamTransformer.handleGetRequest(httpExchange);
+        long cardId;
+        if("POST".equals(httpExchange.getRequestMethod())) {
+            Card card = POSTRequestHandler.handleCardPostRequest(httpExchange);
+            cardId = card.getId();
+        } else {
+            cardId = RequestParamTransformer.handleGetRequest(httpExchange);
+        }
         BigDecimal balance = cardService.checkBalance(cardId);
         new ResponseMaker<BigDecimal>().makeResponse(balance, httpExchange);
     }

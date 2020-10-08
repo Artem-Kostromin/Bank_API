@@ -6,6 +6,7 @@ import com.sun.net.httpserver.HttpHandler;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import ru.sberstart.entity.Card;
+import ru.sberstart.handler.util.POSTRequestHandler;
 import ru.sberstart.handler.util.RequestParamTransformer;
 import ru.sberstart.handler.util.ResponseMaker;
 import ru.sberstart.service.AccountService;
@@ -24,7 +25,7 @@ public class CreateCardHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange httpExchange) {
         if("POST".equals(httpExchange.getRequestMethod())) {
-            Card card = handlePostRequest(httpExchange);
+            Card card = POSTRequestHandler.handleCardPostRequest(httpExchange);
             Card card1 = cardService.persist(card.getAccountId(), card);
             accountService.findOne(card.getAccountId()).getCards().add(card1);
             new ResponseMaker<Card>().makeResponse(card, httpExchange);
@@ -34,17 +35,5 @@ public class CreateCardHandler implements HttpHandler {
             accountService.findOne(account_id).getCards().add(card);
             new ResponseMaker<Card>().makeResponse(card, httpExchange);
         }
-    }
-
-    private Card handlePostRequest(HttpExchange httpExchange) {
-        InputStream is = httpExchange.getRequestBody();
-        ObjectMapper mapper = new ObjectMapper();
-        Card card = null;
-        try {
-            card = mapper.readValue(is, Card.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return card;
     }
 }

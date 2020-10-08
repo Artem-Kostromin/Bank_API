@@ -3,9 +3,13 @@ package ru.sberstart.handler.account;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import lombok.AllArgsConstructor;
+import ru.sberstart.entity.Account;
+import ru.sberstart.handler.util.POSTRequestHandler;
 import ru.sberstart.handler.util.RequestParamTransformer;
+import ru.sberstart.handler.util.ResponseMaker;
 import ru.sberstart.service.AccountService;
 
+import javax.xml.ws.Response;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -15,20 +19,14 @@ public class RemoveAccountHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        OutputStream outputStream = httpExchange.getResponseBody();
-        int id = RequestParamTransformer.handleGetRequest(httpExchange);
-        boolean isRemove = service.removeOne(id);
-        String answer = null;
-        if(isRemove) {
-            answer = "remove were success";
+        long accountId;
+        if("POST".equals(httpExchange.getRequestMethod())) {
+            Account account = POSTRequestHandler.handleAccountPostRequest(httpExchange);
+            accountId = account.getId();
         } else {
-            answer = "remove failed";
+            accountId = RequestParamTransformer.handleGetRequest(httpExchange);
         }
-
-        httpExchange.sendResponseHeaders(200, answer.length());
-
-        outputStream.write(answer.getBytes());
-        outputStream.flush();
-        outputStream.close();
+        service.removeOne(accountId);
+        new ResponseMaker<String>().makeResponse("Account with id = " + accountId + "removed successful", httpExchange);
     }
 }

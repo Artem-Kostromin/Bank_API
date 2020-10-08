@@ -5,8 +5,11 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import lombok.AllArgsConstructor;
+import ru.sberstart.entity.Account;
 import ru.sberstart.entity.Card;
+import ru.sberstart.handler.util.POSTRequestHandler;
 import ru.sberstart.handler.util.RequestParamTransformer;
+import ru.sberstart.handler.util.ResponseMaker;
 import ru.sberstart.service.CardService;
 
 import java.io.IOException;
@@ -19,17 +22,14 @@ public class GetCardsByAccountHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        List<Card> cards = service.findAllByAccount(RequestParamTransformer.handleGetRequest(httpExchange));
-
-        OutputStream outputStream = httpExchange.getResponseBody();
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
-        String s = writer.writeValueAsString(cards);
-
-        httpExchange.sendResponseHeaders(200, s.length());
-
-        outputStream.write(s.getBytes());
-        outputStream.flush();
-        outputStream.close();
+        List<Card> cards;
+        if("POST".equals(httpExchange.getRequestMethod())) {
+            Account account = POSTRequestHandler.handleAccountPostRequest(httpExchange);
+            long accountId = account.getId();
+            cards = service.findAllByAccount(accountId);
+        } else {
+            cards = service.findAllByAccount(RequestParamTransformer.handleGetRequest(httpExchange));
+        }
+        new ResponseMaker<List<Card>>().makeResponse(cards, httpExchange);
     }
 }

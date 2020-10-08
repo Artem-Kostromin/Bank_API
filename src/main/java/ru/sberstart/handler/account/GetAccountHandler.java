@@ -7,6 +7,7 @@ import com.sun.net.httpserver.HttpHandler;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import ru.sberstart.entity.Account;
+import ru.sberstart.handler.util.POSTRequestHandler;
 import ru.sberstart.handler.util.RequestParamTransformer;
 import ru.sberstart.handler.util.ResponseMaker;
 import ru.sberstart.service.AccountService;
@@ -24,35 +25,17 @@ public class GetAccountHandler implements HttpHandler {
     @SneakyThrows
     @Override
     public void handle(HttpExchange httpExchange) {
-        int id = 0;
-        if("GET".equals(httpExchange.getRequestMethod())) {
-            id = RequestParamTransformer.handleGetRequest(httpExchange);
-        } else if("POST".equals(httpExchange.getRequestMethod())) {
-            id = handlePostRequest(httpExchange);
+        Account account;
+        long accountId;
+        if("POST".equals(httpExchange.getRequestMethod())) {
+            account = POSTRequestHandler.handleAccountPostRequest(httpExchange);
+            accountId = account.getId();
+        } else {
+            accountId = RequestParamTransformer.handleGetRequest(httpExchange);
         }
-        Account account = aService.findOne(id);
-        account.setCards(cService.findAllByAccount(id));
+        account = aService.findOne(accountId);
+        account.setCards(cService.findAllByAccount(accountId));
 
         new ResponseMaker<Account>().makeResponse(account, httpExchange);
-    }
-
-    private String handleGetRequest(HttpExchange httpExchange) {
-        return httpExchange.
-                getRequestURI()
-                .toString()
-                .split("\\?")[1]
-                .split("=")[1];
-    }
-
-    private Integer handlePostRequest(HttpExchange httpExchange) {
-        InputStream is = httpExchange.getRequestBody();
-        ObjectMapper mapper = new ObjectMapper();
-        Integer integer = null;
-        try {
-            integer = mapper.readValue(is, Integer.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return integer;
     }
 }
