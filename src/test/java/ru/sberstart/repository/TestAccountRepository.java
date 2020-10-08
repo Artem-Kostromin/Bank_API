@@ -12,21 +12,22 @@ import ru.sberstart.util.db.JdbcConnection;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
 public class TestAccountRepository {
     private final Connection connection = JdbcConnection.getConnection();
-    private final AccountRepository repo = new AccountRepositoryImpl(connection);
+    private final AccountRepository accountRepo = new AccountRepositoryImpl(connection);
 
     @Before
     public void before() {
         DeleteDbFiles.execute("~/Bank_API", "Bank_API", true);
-
         try {
             RunScript.execute(Objects.requireNonNull(connection),
-                    new FileReader("src/main/resources/initTables.sql"));
+                    new FileReader("src/main/resources/testScript/initSchema.sql"));
         } catch (SQLException | FileNotFoundException throwables) {
             throwables.printStackTrace();
         }
@@ -34,25 +35,36 @@ public class TestAccountRepository {
 
     @Test
     public void findOneTest() throws SQLException {
-        long id = 3;
-        Account account = repo.findOne(id);
-        Assert.assertEquals(account.getId(), id);
+        Account expectedAccount = new Account();
+        expectedAccount.setId(1);
+        PreparedStatement prStatement = connection.prepareStatement("INSERT INTO accounts VALUES (1)");
+        prStatement.executeUpdate();
+        Assert.assertEquals(expectedAccount, accountRepo.findOne(1));
     }
 
     @Test
     public void findAllTest() throws SQLException {
-        List<Account> accounts = repo.findAll();
-        Assert.assertTrue(accounts.size() > 0);
+        PreparedStatement prStatement = connection.prepareStatement("INSERT INTO accounts VALUES (1), (2), (3), (4)");
+        prStatement.executeUpdate();
+        int expectedNumberOfCards = 4;
+        Assert.assertEquals(expectedNumberOfCards, accountRepo.findAll().size());
     }
 
     @Test
     public void persistTest() throws SQLException {
-        long id = repo.persist(new Account()).getId();
-        Assert.assertTrue(id > 0);
+        Account account = accountRepo.persist(new Account());
+        Assert.assertNotEquals(0, account.getId());
     }
 
     @Test
     public void removeOneTest() throws SQLException {
-        Assert.assertTrue(repo.removeOne(2));
+        PreparedStatement prStatement = connection.prepareStatement("INSERT INTO accounts VALUES (1), (2)");
+        prStatement.executeUpdate();
+        accountRepo.removeOne(1);
+        prStatement = connection.prepareStatement("Select Count(id) as c From accounts");
+        ResultSet rs = prStatement.executeQuery();
+        rs.next();
+        int count = rs.getInt("c");
+        Assert.assertEquals(1, count);
     }
 }
