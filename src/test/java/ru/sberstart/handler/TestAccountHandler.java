@@ -22,11 +22,6 @@ import java.nio.charset.StandardCharsets;
 public class TestAccountHandler {
     private final CloseableHttpClient client = HttpClients.createDefault();
 
-    @Before
-    public void initMockServer() throws IOException {
-
-    }
-
     @Test
     public void createAccountHandlerTest() throws IOException {
         HttpGet request = new HttpGet("http://localhost:8080/createAccount");
