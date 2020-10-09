@@ -3,6 +3,8 @@ package ru.sberstart.util.db;
 import lombok.SneakyThrows;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -13,8 +15,17 @@ public class JdbcConnection {
 
     @SneakyThrows
     public static Connection getConnection() {
-        FileInputStream fis = new FileInputStream("src/main/resources/application.properties");
-        properties.load(fis);
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream("src/main/resources/application.properties");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            properties.load(fis);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         String name = (String) properties.get("datasource.name");
         String url = (String) properties.get("datasource.url");
