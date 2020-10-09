@@ -147,7 +147,7 @@ public class TestCardHandler {
 
         String result = EntityUtils.toString(response.getEntity());
 
-        Assert.assertEquals("\"Card with id 1 removed success!\"", result);
+        Assert.assertEquals("\"Card with id 1 removed successfully!\"", result);
     }
 
 

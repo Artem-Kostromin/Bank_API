@@ -25,6 +25,6 @@ public class RemoveAccountHandler implements HttpHandler {
             accountId = RequestParamTransformer.handleGetRequest(httpExchange);
         }
         service.removeOne(accountId);
-        new ResponseMaker<String>().makeResponse("Account with id = " + accountId + " removed successful", httpExchange);
+        new ResponseMaker<String>().makeResponse("Account with id = " + accountId + " removed successfully", httpExchange);
     }
 }

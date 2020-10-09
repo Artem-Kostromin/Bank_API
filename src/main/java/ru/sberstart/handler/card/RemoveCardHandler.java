@@ -25,6 +25,6 @@ public class RemoveCardHandler implements HttpHandler {
             cardId = RequestParamTransformer.handleGetRequest(httpExchange);
         }
         service.removeOne(cardId);
-        new ResponseMaker<String>().makeResponse("Card with id " + cardId + " removed success!", httpExchange);
+        new ResponseMaker<String>().makeResponse("Card with id " + cardId + " removed successfully!", httpExchange);
     }
 }
