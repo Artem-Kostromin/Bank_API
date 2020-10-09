@@ -38,7 +38,8 @@ public class TestCardRepository {
 
     @Test
     public void findAllTest() throws SQLException {
-        PreparedStatement prStatement = connection.prepareStatement("INSERT INTO cards VALUES (1, 1, 500), (2, 1, 700), (2, 1, 700), (2, 1, 700)");
+        PreparedStatement prStatement = connection.prepareStatement("INSERT INTO cards VALUES (default , 1, 500), (default , 1, 700)" +
+                ", (default , 1, 700), (default , 1, 700)");
         prStatement.executeUpdate();
         int expectedNumberOfCards = 4;
         Assert.assertEquals(expectedNumberOfCards, cardRepo.findAll().size());
@@ -104,12 +105,14 @@ public class TestCardRepository {
     public void updateCheck() throws SQLException {
         PreparedStatement prStatement = null;
         assert connection != null;
-        prStatement = connection.prepareStatement("INSERT INTO cards values (default, 1, 100)");
-        prStatement.executeUpdate();
-        Card card = new Card(1, 1, BigDecimal.valueOf(200));
+        Card card1 = new Card();
+        card1.setAccountId(2);
+        card1.setBalance(new BigDecimal(200));
+        Card card = cardRepo.persist(1,card1);
         long id = card.getId();
         Card expectedCard = cardRepo.update(id, card);
-        prStatement = connection.prepareStatement("Select * From cards Where id = 1");
+        prStatement = connection.prepareStatement("Select * From cards Where id = ?");
+        prStatement.setLong(1, id);
         ResultSet rs = prStatement.executeQuery();
         rs.next();
         Assert.assertEquals(expectedCard.getBalance(), rs.getBigDecimal("balance"));
