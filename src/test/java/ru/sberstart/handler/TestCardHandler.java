@@ -40,7 +40,6 @@ public class TestCardHandler {
 
         String result = EntityUtils.toString(response.getEntity());
 
-        System.out.println(result);
         ObjectMapper mapper = new ObjectMapper();
         Card card = mapper.readValue(result, Card.class);
 
@@ -53,7 +52,7 @@ public class TestCardHandler {
 
         StringBuilder json = new StringBuilder();
         json.append("{");
-        json.append("\"id\":\"1\"");
+        json.append("\"id\":\"2\"");
         json.append("}");
 
         post.setEntity(new StringEntity(json.toString()));
@@ -63,7 +62,7 @@ public class TestCardHandler {
 
         ObjectMapper mapper = new ObjectMapper();
         Card card = mapper.readValue(result, Card.class);
-        Assert.assertEquals(1, card.getId());
+        Assert.assertEquals(2, card.getId());
     }
 
     @Test
@@ -112,7 +111,6 @@ public class TestCardHandler {
 
         String result = EntityUtils.toString(response.getEntity());
 
-        System.out.println(result);
         ObjectMapper mapper = new ObjectMapper();
         BigDecimal balance = mapper.readValue(result, BigDecimal.class);
         Assert.assertEquals(BigDecimal.valueOf(500), balance);
