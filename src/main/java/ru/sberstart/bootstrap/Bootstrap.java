@@ -31,7 +31,6 @@ import java.sql.Connection;
 @Setter
 @NoArgsConstructor
 public class Bootstrap {
-    private final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private final Connection connection = JdbcConnection.getConnection();
     private final AccountRepository accountRepository = new AccountRepositoryImpl(connection);
     private final CardRepository cardRepository = new CardRepositoryImpl(connection, accountRepository);

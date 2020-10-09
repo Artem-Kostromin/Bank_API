@@ -9,7 +9,9 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import ru.sberstart.bootstrap.Bootstrap;
 import ru.sberstart.entity.Card;
 
 import java.io.IOException;
@@ -18,6 +20,11 @@ import java.math.BigDecimal;
 public class TestCardHandler {
     private final CloseableHttpClient client = HttpClients.createDefault();
     private final String rootUrl = "http://localhost:8080/";
+
+    @BeforeClass
+    public static void startServer() throws IOException {
+        new Bootstrap().startApp();
+    }
 
     @Test
     public void createCardTest() throws IOException {
@@ -46,7 +53,7 @@ public class TestCardHandler {
 
         StringBuilder json = new StringBuilder();
         json.append("{");
-        json.append("\"id\":\"1\"");
+        json.append("\"id\":\"2\"");
         json.append("}");
 
         post.setEntity(new StringEntity(json.toString()));
@@ -56,7 +63,7 @@ public class TestCardHandler {
 
         ObjectMapper mapper = new ObjectMapper();
         Card card = mapper.readValue(result, Card.class);
-        Assert.assertEquals(1, card.getId());
+        Assert.assertEquals(2, card.getId());
     }
 
     @Test

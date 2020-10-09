@@ -1,6 +1,5 @@
 package ru.sberstart.entity;
 
-import com.fasterxml.jackson.annotation.JacksonAnnotation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

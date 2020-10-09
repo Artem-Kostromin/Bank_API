@@ -1,7 +1,6 @@
 package ru.sberstart.repository.impl;
 
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import ru.sberstart.entity.Account;
 import ru.sberstart.entity.Card;
 import ru.sberstart.repository.AccountRepository;

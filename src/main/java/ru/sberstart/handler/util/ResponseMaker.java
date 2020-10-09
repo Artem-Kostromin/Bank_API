@@ -13,9 +13,6 @@ public class ResponseMaker<T> {
         OutputStream outputStream = httpExchange.getResponseBody();
         ObjectMapper mapper = new ObjectMapper();
         ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
-        /*String s;
-        if (t.getClass() == String.class) s = (String) t;
-        else s = writer.writeValueAsString(t);*/
 
         String s = writer.writeValueAsString(t);
 

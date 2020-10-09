@@ -11,8 +11,9 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import ru.sberstart.bootstrap.Bootstrap;
 import ru.sberstart.entity.Account;
 
 import java.io.IOException;
@@ -21,6 +22,11 @@ import java.nio.charset.StandardCharsets;
 
 public class TestAccountHandler {
     private final CloseableHttpClient client = HttpClients.createDefault();
+
+    @BeforeClass
+    public static void startServer() throws IOException {
+        new Bootstrap().startApp();
+    }
 
     @Test
     public void createAccountHandlerTest() throws IOException {
@@ -42,7 +48,6 @@ public class TestAccountHandler {
         HttpEntity entity = response.getEntity();
         InputStream is = entity.getContent();
         String result = IOUtils.toString(is, StandardCharsets.UTF_8);
-        System.out.println(result);
 
         ObjectMapper mapper = new ObjectMapper();
         Account[] accounts = mapper.readValue(result, Account[].class);
@@ -77,7 +82,6 @@ public class TestAccountHandler {
         request.setEntity(new StringEntity(json));
         CloseableHttpResponse response = client.execute(request);
         String result = EntityUtils.toString(response.getEntity());
-        System.out.println(result);
 
         Assert.assertNotNull(result);
     }
