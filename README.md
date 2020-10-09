@@ -8,8 +8,8 @@ Study project with simple bank API
 + JDK 1.8
 + Apache Maven 3.6.1
 ## The names of the developers and contacts:
-Name: Pyshinskiy Dmitriy; email: dmitriy.pyshinskiy@mail.ru
-Name: Kostromin Artem; email: kostromin14@mail.ru
++ Name: Pyshinskiy Dmitriy; email: dmitriy.pyshinskiy@mail.ru
++ Name: Kostromin Artem; email: kostromin14@mail.ru
 
 ## Command for building project:
 ````
