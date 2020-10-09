@@ -39,7 +39,7 @@ public class Bootstrap {
     private final CardService cardService = new CardServiceImpl(cardRepository);
 
     public void startApp() throws IOException {
-        HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+        HttpServer server = HttpServer.create(new InetSocketAddress(8091), 0);
         server.createContext("/", new MainHandler());
         server.createContext("/createAccount", new CreateAccountHandler(accountService));
         server.createContext("/getAccount", new GetAccountHandler(accountService, cardService));

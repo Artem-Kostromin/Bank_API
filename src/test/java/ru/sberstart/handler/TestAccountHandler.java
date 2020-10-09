@@ -12,7 +12,9 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import ru.sberstart.bootstrap.Bootstrap;
 import ru.sberstart.entity.Account;
 
 import java.io.IOException;
@@ -22,9 +24,14 @@ import java.nio.charset.StandardCharsets;
 public class TestAccountHandler {
     private final CloseableHttpClient client = HttpClients.createDefault();
 
+    @BeforeClass
+    public static void startServer() throws IOException {
+        new Bootstrap().startApp();
+    }
+
     @Test
     public void createAccountHandlerTest() throws IOException {
-        HttpGet request = new HttpGet("http://localhost:8080/createAccount");
+        HttpGet request = new HttpGet("http://localhost:8091/createAccount");
         CloseableHttpResponse response = client.execute(request);
         HttpEntity entity = response.getEntity();
         InputStream is = entity.getContent();
@@ -37,7 +44,7 @@ public class TestAccountHandler {
 
     @Test
     public void getAccountsHandlerTest() throws IOException {
-        HttpGet request = new HttpGet("http://localhost:8080/getAccounts");
+        HttpGet request = new HttpGet("http://localhost:8091/getAccounts");
         CloseableHttpResponse response = client.execute(request);
         HttpEntity entity = response.getEntity();
         InputStream is = entity.getContent();
@@ -53,7 +60,7 @@ public class TestAccountHandler {
     @Test
     public void getAccountHandlerTest() throws IOException {
         int id = 1;
-        HttpPost request = new HttpPost("http://localhost:8080/getAccount?id="+id);
+        HttpPost request = new HttpPost("http://localhost:8091/getAccount?id="+id);
         String json = "{" +
                 "\"id\":\""+id+"\"" +
                 "}";
@@ -70,7 +77,7 @@ public class TestAccountHandler {
     @Test
     public void removeAccountHandlerTest() throws IOException {
         int id = 2;
-        HttpPost request = new HttpPost("http://localhost:8080/removeAccount?id="+id);
+        HttpPost request = new HttpPost("http://localhost:8091/removeAccount?id="+id);
         String json = "{" +
                 "\"id\":\""+id+"\"" +
                 "}";
